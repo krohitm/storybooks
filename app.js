@@ -1,6 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const expressSession = require('express-session');
+const cookieParser = require('cookie-parser');
+
+//load user model
+require('./models/User');
 
 //passport config
 require('./config/passport')(passport);
@@ -31,6 +36,23 @@ const app = express();
 
 app.get('/', (Req, res) => {
   res.send('it works');
+})
+
+app.use(cookieParser());
+app.use(expressSession({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false
+}))
+
+//passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+//set global vars
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
 })
 
 app.use('/auth', auth);
