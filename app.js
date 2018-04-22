@@ -1,4 +1,5 @@
 const express = require('express');
+const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const expressSession = require('express-session');
@@ -12,6 +13,7 @@ require('./config/passport')(passport);
 
 //Load routes
 const auth = require('./routes/auth')
+const index = require('./routes/index')
 
 
 //setting access to config vars
@@ -29,14 +31,16 @@ mongoose.Promise = global.Promise;
 //Mongoose connect
 mongoose.connect(mongoURI, {
 })
-.then(() => console.log('MongoDB connected!'))
-.catch(err => console.log(err));
+  .then(() => console.log('MongoDB connected!'))
+  .catch(err => console.log(err));
 
 const app = express();
 
-app.get('/', (Req, res) => {
-  res.send('it works');
-})
+//handlebars middleware
+app.engine('handlebars', exphbs({
+  defaultLayout:'main'
+}));
+app.set('view engine', 'handlebars');
 
 app.use(cookieParser());
 app.use(expressSession({
@@ -55,6 +59,8 @@ app.use((req, res, next) => {
   next();
 })
 
+//routes
+app.use('/', index);
 app.use('/auth', auth);
 
 //setting port to listen
