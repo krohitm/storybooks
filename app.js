@@ -12,8 +12,9 @@ require('./models/User');
 require('./config/passport')(passport);
 
 //Load routes
-const auth = require('./routes/auth')
 const index = require('./routes/index')
+const auth = require('./routes/auth')
+const stories = require('./routes/stories')
 
 
 //setting access to config vars
@@ -62,6 +63,7 @@ app.use((req, res, next) => {
 //routes
 app.use('/', index);
 app.use('/auth', auth);
+app.use('/stories', stories);
 
 //setting port to listen
 const port = process.env.PORT || 5000
