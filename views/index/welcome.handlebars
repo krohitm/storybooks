@@ -1,7 +1,10 @@
 <h1>Welcome</h1>
 <p>Welcome to Storybooks.</p>
-<p>Post stories from your life experiences and choose to share it with the rest of the 
-  world or keep it completely to yourself as a diary.
+<p>Post stories from your life experiences and choose to share it with the rest of the world or keep it completely to yourself
+  as a diary.
 </p>
-<a class="btn red-darken-1" href="/auth/google"><i class="fa ga-google left">
-</i>Login with Google</a>
+{{#if user}} {{else}}
+<a class="btn red-darken-1" href="/auth/google">
+  <i class="fa fa-google left">
+  </i>Login with Google</a>
+{{/if}}
