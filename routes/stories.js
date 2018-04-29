@@ -9,12 +9,12 @@ const { ensureAuthenticated, ensureGuest } = require('../helpers/auth');
 //stories index
 router.get('/', (req, res) => {
   Story.find({ status: 'public' })
-  .populate('user')
-  .then(stories => {
-    res.render('stories/index', {
-      stories: stories
-    });
-  })
+    .populate('user')
+    .then(stories => {
+      res.render('stories/index', {
+        stories: stories
+      });
+    })
 })
 
 //show single story
@@ -22,12 +22,12 @@ router.get('/show/:id', (req, res) => {
   Story.findOne({
     _id: req.params.id
   })
-  .populate('user')
-  .then(story => {
-    res.render('stories/show', {
-      story: story,
+    .populate('user')
+    .then(story => {
+      res.render('stories/show', {
+        story: story,
+      })
     })
-  })
 })
 
 //add story form
@@ -40,11 +40,11 @@ router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   Story.findOne({
     _id: req.params.id
   })
-  .then(story => {
-    res.render('stories/edit', {
-      story: story,
+    .then(story => {
+      res.render('stories/edit', {
+        story: story,
+      })
     })
-  })
 })
 
 //process add story
@@ -71,6 +71,34 @@ router.post('/', (req, res) => {
     .save()
     .then(story => {
       res.redirect(`/stories/show/${story.id}`)
+    })
+})
+
+//edit form process
+router.put('/:id', (req, res) => {
+  Story.findOne({
+    _id: req.params.id
+  })
+    .then(story => {
+      let allowComments;
+
+      if (req.body.allowComments) {
+        allowComments = true;
+      }
+      else {
+        allowComments = false;
+      }
+
+      //new values
+      story.title = req.body.title;
+      story.body = req.body.body;
+      story.status = req.body.status;
+      story.allowComments = allowComments;
+
+      story.save()
+        .then(story => {
+          res.redirect('/dashboard');
+        })
     })
 })
 
