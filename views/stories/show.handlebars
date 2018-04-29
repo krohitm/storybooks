@@ -25,7 +25,18 @@
         {{/if}}
       </div>
     </div>
-    {{/if}}
+    {{#each story.comments}}
+    <div class="card">
+      <div class="card-content">
+        <div class="chip">
+          <img src="{{commentUser.image}}"> {{commentUser.firstName}} {{commentUser.lastName}}
+        </div>
+        <br>
+        <small>Posted: {{formatDate commentDate 'MMMM Do YYYY'}}</small>
+        <h5>{{commentBody}}</h5>
+      </div>
+    </div>
+    {{/each}} {{/if}}
   </div>
   <div class="col s12 m4">
     <div class="card center-align">
