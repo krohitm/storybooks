@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 //create schema
 const StorySchema = new Schema({
-  gotitleogleID: {
+  title: {
     type: String,
     required: true
   },
@@ -22,7 +22,7 @@ const StorySchema = new Schema({
   },
   comments: [{
     commentBody: {
-      typr: String,
+      type: String,
       required: true
     },
     commentDate: {
@@ -38,7 +38,7 @@ const StorySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
-  data: {
+  date: {
     type: Date,
     default: Date.now
   }
