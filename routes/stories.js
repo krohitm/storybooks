@@ -10,6 +10,7 @@ const { ensureAuthenticated, ensureGuest } = require('../helpers/auth');
 router.get('/', (req, res) => {
   Story.find({ status: 'public' })
     .populate('user')
+    .sort({ date: 'desc' })
     .then(stories => {
       res.render('stories/index', {
         stories: stories
@@ -42,9 +43,14 @@ router.get('/edit/:id', ensureAuthenticated, (req, res) => {
     _id: req.params.id
   })
     .then(story => {
-      res.render('stories/edit', {
-        story: story,
-      })
+      if (story.user == req.user.id) {
+        res.render('stories/edit', {
+          story: story,
+        })
+      }
+      else {
+        res.redirect('/stories');
+      }
     })
 })
 
@@ -124,9 +130,9 @@ router.post('/comment/:id', (req, res) => {
       story.comments.unshift(newComment);
 
       story.save()
-      .then(story =>{
-        res.redirect(`/stories/show/${story.id}`);
-      })
+        .then(story => {
+          res.redirect(`/stories/show/${story.id}`);
+        })
     });
 });
 
