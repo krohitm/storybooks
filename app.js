@@ -33,7 +33,8 @@ else {
 const {
   truncate,
   stripTags,
-  formatDate
+  formatDate,
+  select
 } = require('./helpers/hbs')
 
 //Map global promises
@@ -52,10 +53,11 @@ app.use(bodyParser.json())
 
 //handlebars middleware
 app.engine('handlebars', exphbs({
-  helpers:{
+  helpers: {
     truncate: truncate,
     stripTags: stripTags,
-    formatDate: formatDate
+    formatDate: formatDate,
+    select: select
   },
   defaultLayout: 'main'
 }));
