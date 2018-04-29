@@ -8,7 +8,13 @@ const { ensureAuthenticated, ensureGuest } = require('../helper/auth');
 
 //stories index
 router.get('/', (req, res) => {
-  res.render('stories/index');
+  Story.find({ status: 'public' })
+  .populate('user')
+  .then(stories => {
+    res.render('stories/index', {
+      stories: stories
+    });
+  })
 })
 
 
@@ -21,14 +27,14 @@ router.get('/add', ensureAuthenticated, (req, res) => {
 router.post('/', (req, res) => {
   let allowComments;
 
-  if(req.body.allowComments){
+  if (req.body.allowComments) {
     allowComments = true;
   }
-  else{
+  else {
     allowComments = false;
   }
 
-  const newStory ={
+  const newStory = {
     title: req.body.title,
     body: req.body.body,
     status: req.body.status,
@@ -38,10 +44,10 @@ router.post('/', (req, res) => {
 
   //create story
   new Story(newStory)
-  .save()
-  .then(story => {
-    res.redirect(`/stories/show/${story.id}`)
-  })
+    .save()
+    .then(story => {
+      res.redirect(`/stories/show/${story.id}`)
+    })
 })
 
 module.exports = router;
