@@ -29,6 +29,12 @@ else {
   mongoURI = keys.mongoURI;
 }
 
+//handlebars helpers
+const {
+  truncate,
+  stripTags
+} = require('./helpers/hbs')
+
 //Map global promises
 mongoose.Promise = global.Promise;
 
@@ -45,7 +51,11 @@ app.use(bodyParser.json())
 
 //handlebars middleware
 app.engine('handlebars', exphbs({
-  defaultLayout:'main'
+  helpers:{
+    truncate: truncate,
+    stripTags: stripTags
+  },
+  defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
 

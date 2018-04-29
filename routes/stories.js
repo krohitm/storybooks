@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Story = mongoose.model('stories');
 const User = mongoose.model('users');
-const { ensureAuthenticated, ensureGuest } = require('../helper/auth');
+const { ensureAuthenticated, ensureGuest } = require('../helpers/auth');
 
 
 //stories index
